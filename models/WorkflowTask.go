@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type workflowTask struct {
+type WorkflowTask struct {
 	Id                 uint64    `gorm:"column:id;primaryKey"`
 	WorkflowInstanceId uint64    `gorm:"column:workflow_instance_id"`
 	StepDefinitionId   uint64    `gorm:"column:step_definition_id"`
@@ -11,4 +11,9 @@ type workflowTask struct {
 	Status             string    `gorm:"column:status"`
 	CreationTime       time.Time `gorm:"column:creation_time"`
 	CompletionTime     time.Time `gorm:"column:completion_time"`
+}
+
+func (WorkflowTask) TableName() string {
+
+	return "workflow_task"
 }

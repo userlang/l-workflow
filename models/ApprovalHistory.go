@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type approvalHistory struct {
+type ApprovalHistory struct {
 	Id          uint64    `gorm:"column:id;primaryKey"`
 	InstanceId  uint64    `gorm:"column:instance_id"`
 	StepId      uint64    `gorm:"column:step_id"`
@@ -12,4 +12,9 @@ type approvalHistory struct {
 	BusinessId  uint64    `gorm:"column:business_id"`
 	Reason      string    `gorm:"column:reason"`
 	CreateTime  time.Time `gorm:"create_time"`
+}
+
+func (ApprovalHistory) TableName() string {
+
+	return "approval_history"
 }
