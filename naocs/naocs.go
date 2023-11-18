@@ -26,6 +26,40 @@ func Init() {
 		NotLoadCacheAtStart: true,
 		LogLevel:            "debug",
 	}
+	// 创建服务实例
+	namingClient, err := clients.NewNamingClient(vo.NacosClientParam{
+		ServerConfigs: serverConfig,
+		ClientConfig:  &clientConfig,
+	})
+
+	if err != nil {
+		log.Fatalf("创建NamingClient失败: %s", err.Error())
+	}
+
+	// 注册服务
+	success, err := namingClient.RegisterInstance(vo.RegisterInstanceParam{
+		Ip:          "172.16.0.51",
+		Port:        8848,
+		ServiceName: "workflow",
+		Weight:      1,
+		Enable:      true,
+		Healthy:     true,
+		Ephemeral:   true,
+		GroupName:   "DEV_GROUP",
+		//Metadata: map[string]string{
+		//	"groupName": "DEV_GROUP",
+		//},
+	})
+
+	if err != nil {
+		log.Fatalf("注册服务失败: %s", err.Error())
+	}
+
+	if success {
+		fmt.Println("服务注册成功")
+	} else {
+		fmt.Println("服务注册失败")
+	}
 
 	// 创建动态配置客户端
 	configClient, err := clients.CreateConfigClient(map[string]interface{}{
