@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func Init() {
+func Start() {
 
 	// 创建serverConfig
 	// 支持多个;至少一个ServerConfig
