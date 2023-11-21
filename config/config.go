@@ -14,4 +14,7 @@ const (
 	NServerServiceName         = "workflow"
 	NServerGroupName           = "DEV_GROUP"
 	NServerWeight              = 1
+	RedisAddressPort           = "172.16.0.166:22001"
+	RedisPwd                   = "w3DEhqL67fF12"
+	RedisDB                    = 0
 )

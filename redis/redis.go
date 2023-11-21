@@ -3,6 +3,7 @@ package redis
 import (
 	"fmt"
 	"github.com/go-redis/redis"
+	"workflow/config"
 )
 
 func Start() {
@@ -18,9 +19,9 @@ func Start() {
 func connection() string {
 
 	client := redis.NewClient(&redis.Options{
-		Addr:     "172.16.0.166:22001",
-		Password: "w3DEhqL67fF12@",
-		DB:       0,
+		Addr:     config.RedisAddressPort,
+		Password: config.RedisPwd,
+		DB:       config.RedisDB,
 	})
 
 	result, err := client.Ping().Result()
