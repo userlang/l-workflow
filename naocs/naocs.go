@@ -5,9 +5,12 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
+	"gopkg.in/yaml.v2"
 	"log"
 	"workflow/config"
 )
+
+var nval Nc
 
 func Start() {
 
@@ -94,7 +97,13 @@ func nConfig(serverConfig []constant.ServerConfig, clientConfig constant.ClientC
 		log.Fatalf("获取%s配置失败: %s", dataId, err.Error())
 	}
 
-	fmt.Println(content)
+	err1 := yaml.Unmarshal([]byte(content), &nval)
+	if err1 != nil {
+		fmt.Println(err1)
+	}
+
+	fmt.Println(nval.Base.NConfigGroup, "正在测试读取配置信息")
+
 	// 监听配置变化
 	err = configClient.ListenConfig(vo.ConfigParam{
 		DataId: dataId,
@@ -112,8 +121,8 @@ func nConfig(serverConfig []constant.ServerConfig, clientConfig constant.ClientC
 
 }
 
-type nc struct {
-	base struct {
+type Nc struct {
+	Base struct {
 		NConfigAddress             string `yaml:"NConfigAddress"`
 		NConfigPort                int    `yaml:"NConfigPort"`
 		NConfigNamespaceId         string `yaml:"NConfigNamespaceId"`
