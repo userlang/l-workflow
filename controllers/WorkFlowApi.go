@@ -26,7 +26,6 @@ func Create(context *gin.Context) {
 
 }
 func QueryWorkFlowListApi(context *gin.Context) {
-
 	list := mysql.QueryWorkFlowList()
 	res := common.ResponseData{Code: http.StatusOK, Data: list, Message: "success"}
 	context.JSON(http.StatusOK, res)

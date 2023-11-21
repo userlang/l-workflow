@@ -1,37 +1,41 @@
 # workflow
 
 #### 介绍
-可配置工作流框架，配置好上一步下一步即可调用API执行
+目前市场上的工作流都是超级臃肿，Activiti，Camunda，Flowable 动不动就30来张表， 看起来就像是在 秀 什么
+对于很多业务系统里，根本不需要额外的功能，只提供工作流即可，l-workflow做到了，而且仅仅只用了，5张表 就可以实现根据用户配置工作流并使用，
+配置工作流程描述 并配置好上一步下一步即可调用API调用，简单又灵活，简直YYDS
 
 #### 软件架构
-软件架构说明
-
+golang
+gin
+gorm
+mysql
+redis
+nacos
+gopkg
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 本项目使用[Go Mod](https://github.com/golang/go/wiki/Modules)管理依赖。
+2.  省略 补充
+3.  项目运行后启动在 808o 端口上
 
-#### 使用说明
+#### 目录结构
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. cache 内部缓存
+2. common 工具
+3. config 配置
+4. controllers 接口层
+5. log 日志
+6. logic 逻辑层
+7. models 实体层
+8. nacos 注册中心配置中心
+9. redis 外部缓存
+10. repository 数据操作层
+11. route 路由层
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+#### 作者/参与贡献者
+1.  郎俊楠
 
 
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+ 
