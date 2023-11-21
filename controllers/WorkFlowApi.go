@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"workflow/common"
 	"workflow/models"
 	"workflow/repository/mysql"
 )
@@ -27,5 +28,7 @@ func Create(context *gin.Context) {
 func QueryWorkFlowListApi(context *gin.Context) {
 
 	list := mysql.QueryWorkFlowList()
-	context.JSON(http.StatusOK, list)
+	res := common.ResponseData{Code: http.StatusOK, Data: list, Message: "success"}
+	context.JSON(http.StatusOK, res)
+
 }
