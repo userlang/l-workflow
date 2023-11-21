@@ -111,3 +111,21 @@ func nConfig(serverConfig []constant.ServerConfig, clientConfig constant.ClientC
 	}
 
 }
+
+type nc struct {
+	base struct {
+		NConfigAddress             string `yaml:"NConfigAddress"`
+		NConfigPort                int    `yaml:"NConfigPort"`
+		NConfigNamespaceId         string `yaml:"NConfigNamespaceId"`
+		NConfigTimeoutMs           int    `yaml:"NConfigTimeoutMs"`
+		NConfigNotLoadCacheAtStart string `yaml:"NConfigNotLoadCacheAtStart"`
+		NConfigLogLevel            string `yaml:"NConfigLogLevel"`
+		NConfigDataId              string `yaml:"NConfigDataId"`
+		NConfigGroup               string `yaml:"NConfigGroup"`
+		NServerAddress             string `yaml:"NServerAddress"`
+		NServerPort                int    `yaml:"NServerPort"`
+		NServerServiceName         string `yaml:"NServerServiceName"`
+		NServerGroupName           string `yaml:"NServerGroupName"`
+		NServerWeight              int    `yaml:"NServerWeight"`
+	} `yaml:"base"`
+}
