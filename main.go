@@ -12,6 +12,5 @@ func main() {
 	repository.InitDB()
 	redis.Start()
 	route.Start()
-	//测试
 
 }
