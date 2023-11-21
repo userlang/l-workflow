@@ -34,6 +34,7 @@ gopkg
 9. redis 外部缓存
 10. repository 数据操作层
 11. route 路由层
+12. db sql脚本
 
 #### 作者/参与贡献者
 1.  郎俊楠
