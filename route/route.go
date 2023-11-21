@@ -13,6 +13,7 @@ func Start() {
 	//gin.Context 相当于把Request  Response 封装起来
 
 	engine.GET("/addApprovalHistory/:instanceId", controllers.Create)
+	engine.GET("/queryWorkFlowList", controllers.QueryWorkFlowListApi)
 
 	engine.Run(":8080")
 }

@@ -24,6 +24,6 @@ func Create(context *gin.Context) {
 	mysql.CreateApprovalHistory(&approvalHistory)
 
 }
-func queryWorkFlowList() {
-
+func queryWorkFlowListLogic() []models.WorkflowDefinition {
+	return mysql.QueryWorkFlowList()
 }

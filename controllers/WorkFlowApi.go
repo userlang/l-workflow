@@ -21,6 +21,11 @@ func Create(context *gin.Context) {
 
 	var approvalHistory = models.ApprovalHistory{Id: 111111, InstanceId: parseUint, StepId: 1, Participant: "22额", Result: "233", ResData: "2", BusinessId: 34, Reason: "reason", CreateTime: time.Now()}
 
-	mysql.Create(&approvalHistory)
+	mysql.CreateApprovalHistory(&approvalHistory)
 
+}
+func QueryWorkFlowListApi(context *gin.Context) {
+
+	list := mysql.QueryWorkFlowList()
+	context.JSON(http.StatusOK, list)
 }
