@@ -19,7 +19,6 @@ func Start() {
 			Port:   config.NConfigPort,
 		},
 	}
-
 	// 创建clientConfig
 	clientConfig := constant.ClientConfig{
 		NamespaceId:         config.NConfigNamespaceId, // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId。当namespace是public时，此处填空字符串。
@@ -27,6 +26,14 @@ func Start() {
 		NotLoadCacheAtStart: config.NConfigNotLoadCacheAtStart,
 		LogLevel:            config.NConfigLogLevel,
 	}
+
+	nConfig(serverConfig, clientConfig)
+	nServer(serverConfig, clientConfig)
+
+}
+
+func nServer(serverConfig []constant.ServerConfig, clientConfig constant.ClientConfig) {
+
 	// 创建服务实例
 	namingClient, err := clients.NewNamingClient(vo.NacosClientParam{
 		ServerConfigs: serverConfig,
@@ -62,6 +69,10 @@ func Start() {
 		fmt.Println("服务注册失败")
 	}
 
+}
+
+func nConfig(serverConfig []constant.ServerConfig, clientConfig constant.ClientConfig) {
+
 	// 创建动态配置客户端
 	configClient, err := clients.CreateConfigClient(map[string]interface{}{
 		"serverConfigs": serverConfig,
@@ -84,7 +95,6 @@ func Start() {
 	}
 
 	fmt.Println(content)
-
 	// 监听配置变化
 	err = configClient.ListenConfig(vo.ConfigParam{
 		DataId: dataId,
