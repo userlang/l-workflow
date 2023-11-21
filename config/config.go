@@ -17,4 +17,9 @@ const (
 	RedisAddressPort           = "172.16.0.166:22001"
 	RedisPwd                   = "w3DEhqL67fF12"
 	RedisDB                    = 0
+	MySqlUsername              = "gbjk@test"
+	MySqlPassword              = "gbjk@testpwd1"
+	MySqlHost                  = "172.16.0.104"
+	MySqlPort                  = "13049"
+	MySqlDatabase              = "gbjk_workflow"
 )
