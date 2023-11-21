@@ -6,6 +6,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"log"
+	"workflow/config"
 )
 
 func Start() {
@@ -14,17 +15,17 @@ func Start() {
 	// 支持多个;至少一个ServerConfig
 	serverConfig := []constant.ServerConfig{
 		{
-			IpAddr: "172.16.0.51",
-			Port:   8848,
+			IpAddr: config.NConfigAddress,
+			Port:   config.NConfigPort,
 		},
 	}
 
 	// 创建clientConfig
 	clientConfig := constant.ClientConfig{
-		NamespaceId:         "dev", // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId。当namespace是public时，此处填空字符串。
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-		LogLevel:            "debug",
+		NamespaceId:         config.NConfigNamespaceId, // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId。当namespace是public时，此处填空字符串。
+		TimeoutMs:           config.NConfigTimeoutMs,
+		NotLoadCacheAtStart: config.NConfigNotLoadCacheAtStart,
+		LogLevel:            config.NConfigLogLevel,
 	}
 	// 创建服务实例
 	namingClient, err := clients.NewNamingClient(vo.NacosClientParam{
@@ -38,14 +39,14 @@ func Start() {
 
 	// 注册服务
 	success, err := namingClient.RegisterInstance(vo.RegisterInstanceParam{
-		Ip:          "172.16.0.51",
-		Port:        8848,
-		ServiceName: "workflow",
-		Weight:      1,
+		Ip:          config.NServerAddress,
+		Port:        config.NServerPort,
+		ServiceName: config.NServerServiceName,
+		Weight:      config.NServerWeight,
 		Enable:      true,
 		Healthy:     true,
 		Ephemeral:   true,
-		GroupName:   "DEV_GROUP",
+		GroupName:   config.NServerGroupName,
 		//Metadata: map[string]string{
 		//	"groupName": "DEV_GROUP",
 		//},
@@ -72,8 +73,8 @@ func Start() {
 	}
 
 	// 获取配置
-	dataId := "workflow-dev.yml"
-	group := "DEV_GROUP"
+	dataId := config.NConfigDataId
+	group := config.NConfigGroup
 	content, err := configClient.GetConfig(vo.ConfigParam{
 		DataId: dataId,
 		Group:  group})
