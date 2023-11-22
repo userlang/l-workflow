@@ -86,3 +86,22 @@ func Approved(obj req.JsonObj) common.ResponseData {
 
 	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "审核通过"}
 }
+
+func Rejection(obj req.JsonObj) common.ResponseData {
+
+	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "驳回成功"}
+}
+
+func ReSubmit(obj req.JsonObj) common.ResponseData {
+
+	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "重新发起成功"}
+}
+
+func QueryCurrentInstanceInfo(obj req.JsonObj) common.ResponseData {
+
+	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "查询成功"}
+}
+func QueryHistoryList(obj req.JsonObj) common.ResponseData {
+
+	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "查询成功"}
+}
