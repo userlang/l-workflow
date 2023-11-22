@@ -148,10 +148,10 @@ func ReSubmit(obj req.JsonObj) common.ResponseData {
 }
 
 func QueryCurrentInstanceInfo(obj req.JsonObj) common.ResponseData {
-
-	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "查询成功"}
+	InsInfo := mysql.QueryInsById(obj.InstanceId)
+	return common.ResponseData{Data: InsInfo, Code: http.StatusOK, Message: "查询成功"}
 }
 func QueryHistoryList(obj req.JsonObj) common.ResponseData {
-
-	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "查询成功"}
+	list := mysql.QueryHisByBusIdList(obj.BusinessId)
+	return common.ResponseData{Data: list, Code: http.StatusOK, Message: "查询成功"}
 }
