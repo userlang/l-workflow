@@ -13,6 +13,7 @@ func Start() {
 	//gin.Context 相当于把Request  Response 封装起来
 
 	engine.GET("/queryWorkFlowList", controllers.QueryWorkFlowListApi)
+	engine.POST("/submit", controllers.SubmitApi)
 
 	engine.Run(":8080")
 }

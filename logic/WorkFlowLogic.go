@@ -3,6 +3,7 @@ package logic
 import (
 	"fmt"
 	"net/http"
+	"time"
 	"workflow/common"
 	"workflow/common/req"
 	"workflow/models"
@@ -34,6 +35,7 @@ func Submit(obj req.JsonObj) common.ResponseData {
 	ins.BusinessId = obj.BusinessId
 	ins.Status = common.Submit
 	ins.Assignee = StepDef.Assignee
+	ins.CreationTime = time.Now()
 	ins.Creator = obj.Creator
 	mysql.InsCreate(&ins)
 	/**写入日志*/
@@ -44,6 +46,7 @@ func Submit(obj req.JsonObj) common.ResponseData {
 	history.Result = common.HisSubmit
 	history.Participant = obj.Creator
 	history.ResData = obj.BusinessData
+	history.CreateTime = time.Now()
 	mysql.HisCreate(&history)
 	var data = make(map[string]int)
 	data["instanceId"] = ins.Id

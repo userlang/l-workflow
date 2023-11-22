@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"workflow/common"
@@ -18,13 +19,17 @@ func QueryWorkFlowListApi(context *gin.Context) {
 /**提交审批流程*/
 func SubmitApi(context *gin.Context) {
 	var jsonObj req.JsonObj
-	err := context.ShouldBindJSON(jsonObj)
+	err := context.ShouldBindJSON(&jsonObj)
 	if err != nil {
+		fmt.Println("解析 JSON 数据出错:", err)
 		res := common.ResponseData{Code: http.StatusBadRequest, Data: nil, Message: "参数错误"}
 		context.JSON(res.Code, res)
+	} else {
+		fmt.Println("成功解析 JSON 数据:", jsonObj)
+		responseData := logic.Submit(jsonObj)
+		context.JSON(responseData.Code, responseData)
 	}
-	responseData := logic.Submit(jsonObj)
-	context.JSON(responseData.Code, responseData)
+
 }
 
 /**审核通过*/
