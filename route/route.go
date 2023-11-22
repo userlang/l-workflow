@@ -18,5 +18,6 @@ func Start() {
 	engine.POST("/resubmit", controllers.ReSubmitApi)
 	engine.POST("/rejection", controllers.RejectionApi)
 	engine.GET("/queryHistoryList", controllers.QueryHistoryListApi)
+	engine.GET("/queryCurrentInstanceInfoApi", controllers.QueryCurrentInstanceInfoApi)
 	engine.Run(":8080")
 }

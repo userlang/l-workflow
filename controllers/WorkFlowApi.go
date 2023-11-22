@@ -58,7 +58,7 @@ func ReSubmitApi(context *gin.Context) {
 }
 
 /**查询当前业务审核信息详情*/
-func QueryCurrentInstanceIdInfo(context *gin.Context) {
+func QueryCurrentInstanceInfoApi(context *gin.Context) {
 
 }
 
