@@ -54,3 +54,35 @@ func Submit(obj req.JsonObj) common.ResponseData {
 	data["businessId"] = obj.BusinessId
 	return common.ResponseData{Data: data, Code: http.StatusOK, Message: "操作成功"}
 }
+func Approved(obj req.JsonObj) common.ResponseData {
+	insInfo := mysql.QueryInsById(obj.InstanceId)
+	if insInfo == nil {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "审批实例不存在"}
+	}
+	if insInfo.Status == common.Complete {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "已经审批完了不能再审批了"}
+	}
+	end, nextAssignee, nextNumber := GetNextStep(insInfo.Id)
+	//记录审批日志信息
+	var history models.ApprovalHistory
+	history.BusinessId = obj.BusinessId
+	history.InstanceId = insInfo.Id
+	history.StepId = insInfo.CurrentStepId
+	history.Result = common.Approved
+	history.Participant = obj.Assignee
+	history.ResData = obj.BusinessData
+	history.CreateTime = time.Now()
+	mysql.HisCreate(&history)
+	//更新实例
+	var updateIns models.WorkflowInstance
+	if end {
+		updateIns.Status = common.Complete
+	} else {
+		updateIns.Status = common.Approved
+		updateIns.CurrentStepId = nextNumber
+		updateIns.Assignee = nextAssignee
+	}
+	mysql.UpdateById(&updateIns)
+
+	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "审核通过"}
+}

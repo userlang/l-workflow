@@ -14,3 +14,13 @@ func QueryStepDefinitionInfo(definitionId int, stepNumber int) *models.WorkflowS
 
 	return &info
 }
+
+func QueryStepDefinitionById(id int) *models.WorkflowStepDefinition {
+	var info models.WorkflowStepDefinition
+	result := repository.DB.First(&info, id)
+	if result.Error != nil {
+		return nil
+	}
+
+	return &info
+}
