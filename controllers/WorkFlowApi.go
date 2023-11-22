@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"workflow/common"
 	"workflow/common/req"
-	"workflow/repository/mysql"
+	"workflow/logic"
 )
 
 /**查询审批流程列表*/
 func QueryWorkFlowListApi(context *gin.Context) {
-	list := mysql.QueryWorkFlowList()
+	list := logic.QueryWorkFlowListLogic()
 	res := common.ResponseData{Code: http.StatusOK, Data: list, Message: "success"}
 	context.JSON(res.Code, res)
 }
@@ -23,7 +23,8 @@ func SubmitApi(context *gin.Context) {
 		res := common.ResponseData{Code: http.StatusBadRequest, Data: nil, Message: "参数错误"}
 		context.JSON(res.Code, res)
 	}
-
+	responseData := logic.Submit(jsonObj)
+	context.JSON(responseData.Code, responseData)
 }
 
 /**审核通过*/
