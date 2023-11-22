@@ -14,6 +14,7 @@ func Start() {
 
 	engine.GET("/queryWorkFlowList", controllers.QueryWorkFlowListApi)
 	engine.POST("/submit", controllers.SubmitApi)
+	engine.POST("/approved", controllers.ApprovedApi)
 
 	engine.Run(":8080")
 }

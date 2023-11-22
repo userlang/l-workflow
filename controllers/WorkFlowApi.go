@@ -33,7 +33,7 @@ func SubmitApi(context *gin.Context) {
 }
 
 /**审核通过*/
-func Approved(context *gin.Context) {
+func ApprovedApi(context *gin.Context) {
 	var jsonObj req.JsonObj
 	err := context.ShouldBindJSON(&jsonObj)
 	if err != nil {
@@ -48,12 +48,12 @@ func Approved(context *gin.Context) {
 }
 
 /*审核拒绝*/
-func Rejection(context *gin.Context) {
+func RejectionApi(context *gin.Context) {
 
 }
 
 /**重新发起审批*/
-func ReSubmit(context *gin.Context) {
+func ReSubmitApi(context *gin.Context) {
 
 }
 
