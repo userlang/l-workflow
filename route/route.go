@@ -15,6 +15,8 @@ func Start() {
 	engine.GET("/queryWorkFlowList", controllers.QueryWorkFlowListApi)
 	engine.POST("/submit", controllers.SubmitApi)
 	engine.POST("/approved", controllers.ApprovedApi)
-
+	engine.POST("/resubmit", controllers.ReSubmitApi)
+	engine.POST("/rejection", controllers.RejectionApi)
+	engine.GET("/queryHistoryList", controllers.QueryHistoryListApi)
 	engine.Run(":8080")
 }

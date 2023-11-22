@@ -63,6 +63,6 @@ func QueryCurrentInstanceIdInfo(context *gin.Context) {
 }
 
 /**查询审批历史*/
-func queryHistoryList(context *gin.Context) {
+func QueryHistoryListApi(context *gin.Context) {
 
 }
