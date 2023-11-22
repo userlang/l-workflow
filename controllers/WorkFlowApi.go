@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"workflow/common"
+	"workflow/common/req"
 	"workflow/repository/mysql"
 )
 
@@ -11,11 +12,17 @@ import (
 func QueryWorkFlowListApi(context *gin.Context) {
 	list := mysql.QueryWorkFlowList()
 	res := common.ResponseData{Code: http.StatusOK, Data: list, Message: "success"}
-	context.JSON(http.StatusOK, res)
+	context.JSON(res.Code, res)
 }
 
 /**提交审批流程*/
 func SubmitApi(context *gin.Context) {
+	var jsonObj req.JsonObj
+	err := context.ShouldBindJSON(jsonObj)
+	if err != nil {
+		res := common.ResponseData{Code: http.StatusBadRequest, Data: nil, Message: "参数错误"}
+		context.JSON(res.Code, res)
+	}
 
 }
 
