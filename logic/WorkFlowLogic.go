@@ -62,7 +62,7 @@ func Approved(obj req.JsonObj) common.ResponseData {
 	if insInfo.Status == common.Complete {
 		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "已经审批完了不能再审批了"}
 	}
-	end, nextAssignee, nextNumber := GetNextStep(insInfo.Id)
+
 	//记录审批日志信息
 	var history models.ApprovalHistory
 	history.BusinessId = obj.BusinessId
@@ -73,8 +73,10 @@ func Approved(obj req.JsonObj) common.ResponseData {
 	history.ResData = obj.BusinessData
 	history.CreateTime = time.Now()
 	mysql.HisCreate(&history)
+	end, nextAssignee, nextNumber := GetNextStep(insInfo.Id)
 	//更新实例
 	var updateIns models.WorkflowInstance
+	updateIns.Id = insInfo.Id
 	if end {
 		updateIns.Status = common.Complete
 	} else {
@@ -89,10 +91,58 @@ func Approved(obj req.JsonObj) common.ResponseData {
 
 func Rejection(obj req.JsonObj) common.ResponseData {
 
+	insInfo := mysql.QueryInsById(obj.InstanceId)
+	if insInfo == nil {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "没有审批实例"}
+	}
+	if insInfo.Status == common.Complete {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "流程已经审核完毕 无法拒绝"}
+	}
+	if insInfo.Status == common.Submit {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "流程节点是开始节点 无法拒绝"}
+	}
+	//记录审批日志信息
+	var history models.ApprovalHistory
+	history.BusinessId = obj.BusinessId
+	history.InstanceId = insInfo.Id
+	history.StepId = insInfo.CurrentStepId
+	history.Result = common.HisRefuse
+	history.Participant = obj.Assignee
+	history.Reason = obj.Reason
+	history.ResData = obj.BusinessData
+	history.CreateTime = time.Now()
+	mysql.HisCreate(&history)
+	//更新上一步实例
+	start, preAssignee, preNumber := GetPreStep(insInfo.Id)
+	//更新实例
+	var updateIns models.WorkflowInstance
+	updateIns.Id = insInfo.Id
+	if !start {
+		updateIns.CurrentStepId = preNumber
+		updateIns.Assignee = preAssignee
+	}
+	updateIns.Status = common.Refuse
+
+	mysql.UpdateById(&updateIns)
+
 	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "驳回成功"}
 }
 
 func ReSubmit(obj req.JsonObj) common.ResponseData {
+
+	insInfo := mysql.QueryInsById(obj.InstanceId)
+	if insInfo == nil {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "没有审批实例"}
+	}
+	if insInfo.Status != common.Refuse {
+		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "只有拒绝了才可以重新提交哦"}
+	}
+	var updateIns models.WorkflowInstance
+
+	updateIns.Status = common.Submit
+	updateIns.Id = insInfo.Id
+
+	mysql.UpdateById(&updateIns)
 
 	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "重新发起成功"}
 }

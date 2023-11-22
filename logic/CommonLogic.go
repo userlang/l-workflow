@@ -2,7 +2,7 @@ package logic
 
 import "workflow/repository/mysql"
 
-func GetPreStep(instanceId int) (start bool, assignee string, preNumber int) {
+func GetPreStep(instanceId int) (start bool, preAssignee string, preNumber int) {
 
 	// 省略
 	return false, "", 1

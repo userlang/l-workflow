@@ -26,5 +26,6 @@ func UpdateById(info *models.WorkflowInstance) {
 	if info.Assignee != "" {
 		updateFields["assignee"] = info.Assignee
 	}
+
 	repository.DB.Model(&models.WorkflowDefinition{}).Where("id= ? ", info.Id).Updates(updateFields)
 }

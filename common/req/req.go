@@ -7,5 +7,5 @@ type JsonObj struct {
 	BusinessData string `json:"businessData"`
 	InstanceId   int    `json:"instanceId"`
 	Assignee     string `json:"assignee"` //审核人
-
+	Reason       string `json:"reason"`   //拒绝原因
 }
