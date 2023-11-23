@@ -37,12 +37,12 @@ func UpdateById(info *models.WorkflowInstance, tx *gorm.DB) {
 		updateFields["assignee"] = info.Assignee
 	}
 	if tx != nil {
-		err := tx.Model(&models.WorkflowDefinition{}).Where("id= ? ", info.Id).Updates(updateFields).Error
+		err := tx.Model(&models.WorkflowInstance{}).Where("id= ? ", info.Id).Updates(updateFields).Error
 		if err != nil {
 			tx.Rollback()
 		}
 	} else {
-		repository.DB.Model(&models.WorkflowDefinition{}).Where("id= ? ", info.Id).Updates(updateFields)
+		repository.DB.Model(&models.WorkflowInstance{}).Where("id= ? ", info.Id).Updates(updateFields)
 	}
 
 }
