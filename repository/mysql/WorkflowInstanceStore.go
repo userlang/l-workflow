@@ -1,12 +1,22 @@
 package mysql
 
 import (
+	"gorm.io/gorm"
 	"workflow/models"
 	"workflow/repository"
 )
 
-func InsCreate(info *models.WorkflowInstance) {
-	repository.DB.Create(info)
+func InsCreate(info *models.WorkflowInstance, tx *gorm.DB) {
+
+	if tx != nil {
+		err := tx.Create(info).Error
+		if err != nil {
+			tx.Rollback()
+		}
+	} else {
+		repository.DB.Create(info)
+	}
+
 }
 
 func QueryInsById(id int) *models.WorkflowInstance {
@@ -15,7 +25,7 @@ func QueryInsById(id int) *models.WorkflowInstance {
 	return &info
 }
 
-func UpdateById(info *models.WorkflowInstance) {
+func UpdateById(info *models.WorkflowInstance, tx *gorm.DB) {
 	updateFields := make(map[string]interface{})
 	if info.CurrentStepId != 0 {
 		updateFields["current_step_id"] = info.CurrentStepId
@@ -26,6 +36,13 @@ func UpdateById(info *models.WorkflowInstance) {
 	if info.Assignee != "" {
 		updateFields["assignee"] = info.Assignee
 	}
+	if tx != nil {
+		err := tx.Model(&models.WorkflowDefinition{}).Where("id= ? ", info.Id).Updates(updateFields).Error
+		if err != nil {
+			tx.Rollback()
+		}
+	} else {
+		repository.DB.Model(&models.WorkflowDefinition{}).Where("id= ? ", info.Id).Updates(updateFields)
+	}
 
-	repository.DB.Model(&models.WorkflowDefinition{}).Where("id= ? ", info.Id).Updates(updateFields)
 }

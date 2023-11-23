@@ -7,6 +7,7 @@ import (
 	"workflow/common"
 	"workflow/common/req"
 	"workflow/models"
+	"workflow/repository"
 	"workflow/repository/mysql"
 )
 
@@ -28,6 +29,7 @@ func Submit(obj req.JsonObj) common.ResponseData {
 		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "审批步骤为空"}
 
 	}
+	tx := repository.Start()
 	/**写入信息到流程实例表*/
 	var ins models.WorkflowInstance
 	ins.WorkflowDefinitionId = WorkflowDef.Id
@@ -37,7 +39,7 @@ func Submit(obj req.JsonObj) common.ResponseData {
 	ins.Assignee = StepDef.Assignee
 	ins.CreationTime = time.Now()
 	ins.Creator = obj.Creator
-	mysql.InsCreate(&ins)
+	mysql.InsCreate(&ins, tx)
 	/**写入日志*/
 	var history models.ApprovalHistory
 	history.BusinessId = obj.BusinessId
@@ -47,7 +49,8 @@ func Submit(obj req.JsonObj) common.ResponseData {
 	history.Participant = obj.Creator
 	history.ResData = obj.BusinessData
 	history.CreateTime = time.Now()
-	mysql.HisCreate(&history)
+	mysql.HisCreate(&history, tx)
+	repository.End(tx)
 	var data = make(map[string]int)
 	data["instanceId"] = ins.Id
 	data["workflowId"] = obj.WorkflowId
@@ -63,6 +66,8 @@ func Approved(obj req.JsonObj) common.ResponseData {
 		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "已经审批完了不能再审批了"}
 	}
 
+	tx := repository.Start()
+
 	//记录审批日志信息
 	var history models.ApprovalHistory
 	history.BusinessId = obj.BusinessId
@@ -72,7 +77,7 @@ func Approved(obj req.JsonObj) common.ResponseData {
 	history.Participant = obj.Assignee
 	history.ResData = obj.BusinessData
 	history.CreateTime = time.Now()
-	mysql.HisCreate(&history)
+	mysql.HisCreate(&history, tx)
 	end, nextAssignee, nextNumber := GetNextStep(insInfo.Id)
 	//更新实例
 	var updateIns models.WorkflowInstance
@@ -84,7 +89,8 @@ func Approved(obj req.JsonObj) common.ResponseData {
 		updateIns.CurrentStepId = nextNumber
 		updateIns.Assignee = nextAssignee
 	}
-	mysql.UpdateById(&updateIns)
+	mysql.UpdateById(&updateIns, tx)
+	repository.End(tx)
 
 	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "审核通过"}
 }
@@ -101,6 +107,7 @@ func Rejection(obj req.JsonObj) common.ResponseData {
 	if insInfo.Status == common.Submit {
 		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "流程节点是开始节点 无法拒绝"}
 	}
+	tx := repository.Start()
 	//记录审批日志信息
 	var history models.ApprovalHistory
 	history.BusinessId = obj.BusinessId
@@ -111,7 +118,7 @@ func Rejection(obj req.JsonObj) common.ResponseData {
 	history.Reason = obj.Reason
 	history.ResData = obj.BusinessData
 	history.CreateTime = time.Now()
-	mysql.HisCreate(&history)
+	mysql.HisCreate(&history, tx)
 	//更新上一步实例
 	start, preAssignee, preNumber := GetPreStep(insInfo.Id)
 	//更新实例
@@ -123,8 +130,9 @@ func Rejection(obj req.JsonObj) common.ResponseData {
 	}
 	updateIns.Status = common.Refuse
 
-	mysql.UpdateById(&updateIns)
+	mysql.UpdateById(&updateIns, tx)
 
+	repository.End(tx)
 	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "驳回成功"}
 }
 
@@ -142,7 +150,7 @@ func ReSubmit(obj req.JsonObj) common.ResponseData {
 	updateIns.Status = common.Submit
 	updateIns.Id = insInfo.Id
 
-	mysql.UpdateById(&updateIns)
+	mysql.UpdateById(&updateIns, nil)
 
 	return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "重新发起成功"}
 }

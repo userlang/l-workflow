@@ -22,3 +22,17 @@ func InitDB() (*gorm.DB, error) {
 	DB = db
 	return db, nil
 }
+
+func Start() *gorm.DB {
+	tx := DB.Begin()
+	// 如果发生错误，则回滚事务并返回错误
+
+	if tx.Error != nil {
+		tx.Rollback()
+	}
+	return tx
+}
+
+func End(db *gorm.DB) {
+	db.Commit()
+}

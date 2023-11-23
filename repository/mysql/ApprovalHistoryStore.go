@@ -1,13 +1,21 @@
 package mysql
 
 import (
+	"gorm.io/gorm"
 	"workflow/models"
 	"workflow/repository"
 )
 
-func HisCreate(history *models.ApprovalHistory) {
+func HisCreate(history *models.ApprovalHistory, tx *gorm.DB) {
 
-	repository.DB.Create(history)
+	if tx != nil {
+		err := tx.Create(history).Error
+		if err != nil {
+			tx.Rollback()
+		}
+	} else {
+		repository.DB.Create(history)
+	}
 
 }
 
