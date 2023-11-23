@@ -5,7 +5,7 @@ const (
 	NConfigPort                = 0
 	NConfigNamespaceId         = "***" // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId。当namespace是public时，此处填空字符串。
 	NConfigTimeoutMs           = 0
-	NConfigNotLoadCacheAtStart = false
+	NConfigNotLoadCacheAtStart = true
 	NConfigLogLevel            = "***"
 	NConfigDataId              = "***"
 	NConfigGroup               = "***"
