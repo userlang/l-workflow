@@ -1,4 +1,4 @@
-# l-workflow
+# l-workflow 最经典的小型可配置工作流框架
 
 #### 介绍
 
