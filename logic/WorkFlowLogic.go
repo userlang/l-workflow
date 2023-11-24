@@ -104,9 +104,7 @@ func Rejection(obj req.JsonObj) common.ResponseData {
 	if insInfo.Status == common.Complete {
 		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "流程已经审核完毕 无法拒绝"}
 	}
-	if insInfo.Status == common.Submit {
-		return common.ResponseData{Data: nil, Code: http.StatusOK, Message: "流程节点是开始节点 无法拒绝"}
-	}
+
 	tx := repository.Start()
 	//记录审批日志信息
 	var history models.ApprovalHistory
