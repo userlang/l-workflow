@@ -17,9 +17,9 @@ const (
 	RedisAddressPort           = "***"
 	RedisPwd                   = "***"
 	RedisDB                    = 0
-	MySqlUsername              = "***"
-	MySqlPassword              = "***"
-	MySqlHost                  = "***"
-	MySqlPort                  = 0
-	MySqlDatabase              = "***"
+	MySqlUsername              = "root"
+	MySqlPassword              = "Password01!"
+	MySqlHost                  = "127.0.0.1"
+	MySqlPort                  = "3306"
+	MySqlDatabase              = "l-workflow"
 )
